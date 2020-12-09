@@ -8,25 +8,21 @@ public class Player : MonoBehaviour
     private Rigidbody2D myRb;
 
     [SerializeField]
-    private float jumpForce;
-
-    [SerializeField]
-    private float maxJumpCount;
-
-    private float jumpCount;
+    private Animator animator;
 
     private void Awake()
     {
         myRb = GetComponent<Rigidbody2D>();
-        jumpCount = maxJumpCount;
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if ( ( Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space) ) && jumpCount > 0)
+        if(Input.GetKeyUp(KeyCode.D) && GameManager.Instance.IsStart)
         {
-            myRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            jumpCount--;
+            animator.SetTrigger("Slept");
+
+            GameManager.Instance.GameOver();
         }
     }
 
@@ -35,20 +31,11 @@ public class Player : MonoBehaviour
         if(collision.CompareTag("Jelly"))
         {
             Destroy(collision.gameObject);
-
-            GameManager.Instance.Score += 10;
         }
-        else if(collision.CompareTag("GameOverArea"))
-        {
-            GameManager.Instance.GameOver();
-        }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
+        if(collision.CompareTag("Castle"))
         {
-            jumpCount = maxJumpCount;
+            GameManager.Instance.Clear();
         }
     }
 }

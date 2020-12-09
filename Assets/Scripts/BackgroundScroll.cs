@@ -16,6 +16,8 @@ public class BackgroundScroll : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.IsStart == false) { return; }
+
         if (GameManager.Instance.IsGameOver == false)
         {
             material.mainTextureOffset += scrollSpeed * Time.deltaTime;

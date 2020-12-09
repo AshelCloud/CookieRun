@@ -9,6 +9,8 @@ public class GroundScroll : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.IsStart == false) { return; }
+
         if (GameManager.Instance.IsGameOver == false)
         {
             transform.Translate(scrollSpeed * Time.deltaTime);
